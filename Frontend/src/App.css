@@ -1,0 +1,11 @@
+.swal2-confirm {
+  background: #0d9488;
+}
+
+.swal2-html-container {
+  text-align: justify !important;
+}
+
+.captainLoginForm::-webkit-scrollbar {
+  display: none;
+}

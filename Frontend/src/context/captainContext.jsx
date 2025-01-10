@@ -13,6 +13,8 @@ export const CaptainDataContext = createContext({
       capacity: "",
       vehicleType: "",
     },
+    isLoggedOut: false,
+    logout: (logout) => {},
   },
   setCaptainData: (captain) => {},
 });
@@ -32,12 +34,20 @@ function CaptainContext({ children }) {
     },
   });
 
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
+
   const setCaptainData = (updatedCaptain) => {
     setCaptain(updatedCaptain);
   };
+
+  const logout = (logout) => {
+    setIsLoggedOut(logout);
+  };
   return (
     <div>
-      <CaptainDataContext.Provider value={{ captain, setCaptainData }}>
+      <CaptainDataContext.Provider
+        value={{ captain, setCaptainData, isLoggedOut, logout }}
+      >
         {children}
       </CaptainDataContext.Provider>
     </div>

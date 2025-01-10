@@ -18,7 +18,7 @@ function LocationSearchPanel({ setChooseVehiclePanel, setPanelOpen }) {
           }}
         >
           <i className="ri-map-pin-line text-[#3FC3EE] text-2xl"></i>
-          <h4 className="text-sm text-white">{loc}</h4>
+          <h4 className="text-base text-white">{loc}</h4>
         </div>
       ))}
     </div>

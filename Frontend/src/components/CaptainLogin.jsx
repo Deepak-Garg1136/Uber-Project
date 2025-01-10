@@ -8,7 +8,8 @@ function CaptainLogin() {
   const captainPassword = useRef();
 
   const navigate = useNavigate();
-  const { setCaptainData } = useContext(CaptainDataContext);
+  const { setCaptainData, logout, isLoggedOut } =
+    useContext(CaptainDataContext);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
@@ -24,7 +25,7 @@ function CaptainLogin() {
 
       if (response.status === 200) {
         setCaptainData(response.data.captain);
-        // logout(false);
+        logout(false);
         localStorage.setItem("token", response.data.token);
         navigate("/captain-home");
       }
@@ -35,7 +36,7 @@ function CaptainLogin() {
         Swal.fire({
           icon: "error",
           title: "Login Failed",
-          text: "Invalid email or password.",
+          text: "Unable to authenticate. Check your credentials.",
           background: "#1D1D1D",
           color: "#E2E2E2",
           confirmButtonColor: "#ff6b6b",
@@ -54,17 +55,20 @@ function CaptainLogin() {
       captainEmail.current.value = "";
       captainPassword.current.value = "";
     }
-    setCaptainData(data);
+    // setCaptainData(data);
 
-    // Reset the input fields
-    captainEmail.current.value = "";
-    captainPassword.current.value = "";
+    // // Reset the input fields
+    // captainEmail.current.value = "";
+    // captainPassword.current.value = "";
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121212] p-6">
       {/* Card Container */}
-      <div className="bg-[#1D1D1D] rounded-lg shadow-md w-full max-w-md p-5 pt-1">
+      <div
+        className={`bg-[#1D1D1D] rounded-lg shadow-md w-full max-w-md pt-1
+        ${isLoggedOut ? "p-4" : "p-5"}`}
+      >
         {/* Logo */}
         <div className="flex justify-center mb-2">
           <Link to={"/"}>
@@ -83,9 +87,19 @@ function CaptainLogin() {
         <p className="text-sm text-gray-400 text-center mt-2">
           Log in to access your account
         </p>
-
+        {isLoggedOut && (
+          <div
+            className="bg-[#1D372A] border-l-4 border-teal-500 text-teal-400 rounded-lg shadow-md mt-3 p-2 text-center"
+            role="alert"
+          >
+            <p className="font-bold text-teal-300">Logout Successful!</p>
+          </div>
+        )}
         {/* Login Form */}
-        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+        <form
+          className={`${isLoggedOut ? "mt-3 space-y-4" : "mt-6 space-y-5"}`}
+          onSubmit={handleSubmit}
+        >
           {/* Email Field */}
           <div>
             <label

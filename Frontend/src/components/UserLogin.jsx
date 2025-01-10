@@ -37,7 +37,7 @@ function UserLogin() {
         Swal.fire({
           icon: "error",
           title: "Login Failed",
-          text: "Invalid email or password.",
+          text: "Unable to authenticate. Check your credentials.",
           background: "#1D1D1D",
           color: "#E2E2E2",
           confirmButtonColor: "#ff6b6b",

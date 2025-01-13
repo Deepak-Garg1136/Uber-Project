@@ -1,12 +1,17 @@
 import { useGSAP } from "@gsap/react";
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { useState } from "react";
 import FinishRidePopUp from "./FinishRidePopUp";
+import LiveTracking from "./LiveTracking";
 
 function CaptainRiding() {
   const finishRideRef = useRef();
+  const location = useLocation();
+  const { ride } = location.state || {
+    ride: { distance: "", destination: "" },
+  };
 
   const [finishRidePanel, setFinishRidePanel] = useState(false);
 
@@ -37,6 +42,7 @@ function CaptainRiding() {
 
       {/* Top Image Section */}
       <div className="h-4/5">
+        {/* <LiveTracking/> use his in plave of image */}
         <img
           className="w-full h-full object-cover rounded-b-lg shadow-lg"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
@@ -56,7 +62,7 @@ function CaptainRiding() {
 
         {/* Distance Info */}
         <h4 className="text-center text-lg font-semibold text-[#E2E2E2]">
-          4 Km away
+          {ride.distance} away
         </h4>
 
         {/* Complete Ride Button */}
@@ -69,7 +75,7 @@ function CaptainRiding() {
         className="fixed bottom-0 left-0 w-full p-6 translate-y-full bg-[#121212] z-20 shadow-lg flex flex-col gap-6"
         ref={finishRideRef}
       >
-        <FinishRidePopUp setFinishRidePanel={setFinishRidePanel} />
+        <FinishRidePopUp setFinishRidePanel={setFinishRidePanel} ride={ride} />
       </div>
     </div>
   );

@@ -1,5 +1,12 @@
-import React from "react";
-function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
+import React, { useContext } from "react";
+import { CaptainDataContext } from "../context/captainContext";
+function RidePopUp({
+  setRidePopUpPanel,
+  setConfirmRidePopUpPanel,
+  ride,
+  confirmRide,
+}) {
+  const { captain } = useContext(CaptainDataContext);
   return (
     <>
       {/* Header Section */}
@@ -28,7 +35,9 @@ function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
 
         {/* Driver Info */}
         <div className="flex flex-col flex-1 gap-1">
-          <h2 className="text-xl font-semibold text-[#E2E2E2]">Deepak</h2>
+          <h2 className="text-xl font-semibold text-[#E2E2E2] capitalize">
+            {ride?.user.fullname.firstname + " " + ride?.user.fullname.lastname}
+          </h2>
           <p className="text-base font-medium text-[#3FC3EE]">2.2 KM</p>
         </div>
       </div>
@@ -40,7 +49,7 @@ function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
           <i className="ri-map-pin-line text-2xl text-[#3FC3EE]"></i>
           <div>
             <h3 className="text-base font-semibold text-[#E2E2E2]">562/11/A</h3>
-            <p className="text-sm text-gray-400">Shahjahan Road, New Delhi</p>
+            <p className="text-sm text-gray-400">{ride?.pickup}</p>
           </div>
         </div>
 
@@ -49,7 +58,7 @@ function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
           <i className="ri-map-pin-user-fill text-2xl text-[#3FC3EE]"></i>
           <div>
             <h3 className="text-base font-semibold text-[#E2E2E2]">162/22/B</h3>
-            <p className="text-sm text-gray-400">Rajiv Chowk, New Delhi</p>
+            <p className="text-sm text-gray-400">{ride?.destination}</p>
           </div>
         </div>
 
@@ -57,7 +66,9 @@ function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
         <div className="flex items-center gap-4">
           <i className="ri-bank-card-2-fill text-2xl text-[#3FC3EE]"></i>
           <div>
-            <h3 className="text-base font-semibold text-[#E2E2E2]">₹193.25</h3>
+            <h3 className="text-base font-semibold text-[#E2E2E2]">
+              ₹{ride?.fare}
+            </h3>
             <p className="text-sm text-gray-400">Payment: Cash</p>
           </div>
         </div>
@@ -66,13 +77,16 @@ function RidePopUp({ setRidePopUpPanel, setConfirmRidePopUpPanel }) {
       {/* Action Buttons */}
       <div className="flex gap-4">
         <button
-          className="w-full py-3 bg-[#3FC3EE] text-[#121212] text-lg font-semibold rounded-xl hover:bg-[#1DB4D3] transition-all duration-300"
-          onClick={() => setConfirmRidePopUpPanel(true)}
+          className="w-full py-2 bg-[#3FC3EE] text-[#121212] text-lg font-semibold rounded-xl hover:bg-[#1DB4D3] transition-all duration-300"
+          onClick={() => {
+            setConfirmRidePopUpPanel(true);
+            confirmRide();
+          }}
         >
           Accept
         </button>
         <button
-          className="w-full py-3 bg-[#292929] text-[#E2E2E2] text-lg font-semibold rounded-xl hover:bg-[#3C3C3C] transition-all duration-300"
+          className="w-full py-2 bg-[#292929] text-[#E2E2E2] text-lg font-semibold rounded-xl hover:bg-[#3C3C3C] transition-all duration-300"
           onClick={() => setRidePopUpPanel(false)}
         >
           Ignore

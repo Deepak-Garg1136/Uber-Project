@@ -3,6 +3,8 @@ dotenv.config();
 const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 const captainRoutes = require("./routes/captainRoutes");
+const mapRoutes = require("./routes/mapRoutes");
+const rideRoutes = require("./routes/rides.routes");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -17,6 +19,9 @@ app.use(cookieParser());
 
 app.use("/users", userRoutes);
 app.use("/captains", captainRoutes);
+app.use("/maps", mapRoutes);
+app.use("/rides", rideRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello world");
 });

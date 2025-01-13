@@ -1,18 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSocket } from "../context/socketContext";
+import LiveTracking from "./LiveTracking";
+
 function Riding() {
+  const { socket } = useSocket();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { ride } = location.state || { ride: {} };
+
+  socket.on("ride-ended", () => {
+    navigate("/home");
+  });
   return (
     <div className="h-screen bg-[#121212]">
       {/* Home Icon */}
-      <Link
-        to={"/home"}
-        className="absolute top-2 right-2 flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#3FC3EE] text-[#3FC3EE] hover:bg-[#3FC3EE] hover:text-[#121212] transition-all duration-300 ease-in-out bg-[#1D1D1D]"
-      >
-        <i className="ri-home-9-fill text-2xl"></i>
-      </Link>
 
+      <div className="absolute p-4 top-3 flex justify-between items-center w-screen">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+          alt="Uber Logo"
+          className="w-20"
+        />
+        <Link
+          to={"/home"}
+          className="absolute top-2 right-3 flex items-center justify-center w-11 h-11 rounded-full border-4 border-[#3FC3EE] text-[#3FC3EE] hover:bg-[#3FC3EE] hover:text-[#121212] transition-all duration-300 ease-in-out bg-[#1D1D1D]"
+        >
+          <i className="ri-home-9-fill text-2xl"></i>
+        </Link>
+      </div>
       {/* Top Image Section */}
       <div className="h-1/2">
+        {/* <LiveTracking/> use his in plave of image */}
         <img
           className="w-full h-full object-cover "
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
@@ -37,9 +56,13 @@ function Riding() {
 
           {/* Driver Info */}
           <div className="text-center">
-            <h2 className="text-xl font-semibold text-[#E2E2E2]">Deepak</h2>
+            <h2 className="text-xl font-semibold text-[#E2E2E2] capitalize">
+              {ride?.captain?.fullname.firstname +
+                " " +
+                ride?.captain?.fullname.lastname}
+            </h2>
             <h4 className="text-base text-[#3FC3EE] font-semibold">
-              HR 12 AB 1111
+              {ride?.captain.vehicle.plate}
             </h4>
             <p className="text-sm text-gray-400 italic">Maruti 800</p>
           </div>
@@ -51,8 +74,8 @@ function Riding() {
           <div className="flex items-center gap-3">
             <i className="ri-map-pin-user-fill text-xl text-[#3FC3EE]"></i>
             <div>
-              <h3 className="text-lg font-medium text-[#E2E2E2]">562/11/A</h3>
-              <p className="text-sm text-gray-400">Shahjahan Road, New Delhi</p>
+              <h3 className="text-lg font-medium text-[#E2E2E2]">162/22/B</h3>
+              <p className="text-sm text-gray-400">{ride?.destination}</p>
             </div>
           </div>
 
@@ -60,14 +83,18 @@ function Riding() {
           <div className="flex items-center gap-3">
             <i className="ri-bank-card-2-fill text-xl text-[#3FC3EE]"></i>
             <div>
-              <h3 className="text-lg font-medium text-[#E2E2E2]">₹193.25</h3>
-              <p className="text-sm text-gray-400">Cash</p>
+              <h3 className="text-lg font-medium text-[#E2E2E2]">
+                ₹{ride?.fare}
+              </h3>
+              <p className="text-sm text-gray-400">
+                {ride.paymentMethod || "Payment Method"}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Make a Payment Button */}
-        <button className="w-full py-3 bg-[#3FC3EE] text-[#121212] text-lg font-semibold rounded-md shadow-md hover:bg-[#35ADC7] transition-all duration-300">
+        <button className="w-full py-2 bg-[#3FC3EE] text-[#121212] text-lg font-semibold rounded-md shadow-md hover:bg-[#35ADC7] transition-all duration-300">
           Make a Payment
         </button>
       </div>

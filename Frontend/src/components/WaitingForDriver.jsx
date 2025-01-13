@@ -1,11 +1,11 @@
 import React from "react";
-function WaitingForDriver({ setWaitingForDriverPanel }) {
+function WaitingForDriver({ setWaitingForDriverPanel, ride }) {
   return (
     <>
       {/* Header Section */}
       <div className="flex justify-between items-center">
         <h4 className="text-xl font-semibold text-[#E2E2E2]">
-          Waiting for Driver
+          Driver Information
         </h4>
         <i
           className="ri-arrow-down-wide-line text-lg font-semibold text-[#E2E2E2] cursor-pointer"
@@ -30,11 +30,18 @@ function WaitingForDriver({ setWaitingForDriverPanel }) {
 
           {/* Driver Info */}
           <div className="text-center">
-            <h2 className="text-xl font-semibold text-[#E2E2E2]">Deepak</h2>
+            <h2 className="text-xl font-semibold text-[#E2E2E2]">
+              {ride?.captain.fullname.firstname +
+                " " +
+                ride?.captain.fullname.lastname}
+            </h2>
             <h4 className="text-base text-[#3FC3EE] font-semibold">
-              HR 12 AB 1111
+              {ride?.captain.vehicle.plate}
             </h4>
             <p className="text-sm text-gray-400 italic">Maruti 800</p>
+            <h4 className="text-base text-[#3FC3EE] font-semibold">
+              {ride?.otp}
+            </h4>
           </div>
         </div>
 
@@ -45,7 +52,7 @@ function WaitingForDriver({ setWaitingForDriverPanel }) {
             <i className="ri-map-pin-line text-xl text-[#3FC3EE]"></i>
             <div>
               <h3 className="text-lg font-medium text-[#E2E2E2]">562/11/A</h3>
-              <p className="text-sm text-gray-400">Shahjahan Road, New Delhi</p>
+              <p className="text-sm text-gray-400">{ride?.pickup}</p>
             </div>
           </div>
 
@@ -54,7 +61,7 @@ function WaitingForDriver({ setWaitingForDriverPanel }) {
             <i className="ri-map-pin-user-fill text-xl text-[#3FC3EE]"></i>
             <div>
               <h3 className="text-lg font-medium text-[#E2E2E2]">562/11/A</h3>
-              <p className="text-sm text-gray-400">Shahjahan Road, New Delhi</p>
+              <p className="text-sm text-gray-400">{ride?.destination}</p>
             </div>
           </div>
 
@@ -62,7 +69,9 @@ function WaitingForDriver({ setWaitingForDriverPanel }) {
           <div className="flex items-center gap-3">
             <i className="ri-bank-card-2-fill text-xl text-[#3FC3EE]"></i>
             <div>
-              <h3 className="text-lg font-medium text-[#E2E2E2]">₹193.25</h3>
+              <h3 className="text-lg font-medium text-[#E2E2E2]">
+                ₹{ride?.fare}
+              </h3>
               <p className="text-sm text-gray-400">Cash</p>
             </div>
           </div>

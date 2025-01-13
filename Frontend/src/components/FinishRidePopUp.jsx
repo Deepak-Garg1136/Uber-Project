@@ -1,7 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+function FinishRidePopUp({ setFinishRidePanel, ride }) {
+  const navigate = useNavigate();
+  const endRide = async () => {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/end-ride`,
+      {
+        rideId: ride._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      setFinishRidePanel(false);
+      navigate("/captain-home");
+    }
+  };
 
-function FinishRidePopUp({ setFinishRidePanel }) {
   return (
     <>
       {/* Header Section */}
@@ -29,7 +48,9 @@ function FinishRidePopUp({ setFinishRidePanel }) {
 
         {/* Driver Info */}
         <div className="flex flex-col flex-1 gap-1">
-          <h2 className="text-xl font-semibold text-[#E2E2E2]">Deepak</h2>
+          <h2 className="text-xl font-semibold text-[#E2E2E2]">
+            {ride?.user.fullname.firstname + " " + ride?.user.fullname.lastname}
+          </h2>
           <p className="text-base font-medium text-[#3FC3EE]">2.2 KM</p>
         </div>
       </div>
@@ -41,7 +62,7 @@ function FinishRidePopUp({ setFinishRidePanel }) {
           <i className="ri-map-pin-line text-2xl text-[#3FC3EE]"></i>
           <div>
             <h3 className="text-base font-semibold text-[#E2E2E2]">562/11/A</h3>
-            <p className="text-sm text-gray-400">Shahjahan Road, New Delhi</p>
+            <p className="text-sm text-gray-400">{ride?.pickup}i</p>
           </div>
         </div>
 
@@ -50,7 +71,7 @@ function FinishRidePopUp({ setFinishRidePanel }) {
           <i className="ri-map-pin-user-fill text-2xl text-[#3FC3EE]"></i>
           <div>
             <h3 className="text-base font-semibold text-[#E2E2E2]">162/22/B</h3>
-            <p className="text-sm text-gray-400">Rajiv Chowk, New Delhi</p>
+            <p className="text-sm text-gray-400">{ride?.destination}</p>
           </div>
         </div>
 
@@ -58,7 +79,9 @@ function FinishRidePopUp({ setFinishRidePanel }) {
         <div className="flex items-center gap-4">
           <i className="ri-bank-card-2-fill text-2xl text-[#3FC3EE]"></i>
           <div>
-            <h3 className="text-base font-semibold text-[#E2E2E2]">₹193.25</h3>
+            <h3 className="text-base font-semibold text-[#E2E2E2]">
+              ₹{ride?.fare}
+            </h3>
             <p className="text-sm text-gray-400">Payment: Cash</p>
           </div>
         </div>
@@ -67,12 +90,12 @@ function FinishRidePopUp({ setFinishRidePanel }) {
       {/* Action Buttons */}
       <div className="flex gap-4">
         {/* Confirm Button */}
-        <Link
-          to={"/captain-home"}
+        <button
           className="w-full py-3 bg-[#3FC3EE] text-[#121212] text-lg font-semibold rounded-xl hover:bg-[#1DB4D3] transition-all duration-300 text-center"
+          onClick={endRide}
         >
           Finish Ride
-        </Link>
+        </button>
       </div>
     </>
   );
